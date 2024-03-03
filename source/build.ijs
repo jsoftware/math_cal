@@ -1,8 +1,22 @@
-NB. cal - build
+NB. math_cal repo - build
 
-NB. IAC Fri 3 Jul 2015  09:45:51
-t=. 'BUILT=: ',quote 6!:0@('YYYY-MM-DD  hh:mm:ss'"_)''
-t fwrites '~Dev/cal/source/whenbuilt.ijs'
+NB.==================================
+GIT=. '~Addons/math/cal'  NB. for JAL release
+NB.==================================
 
+NB. TO LOAD JUST THIS BUILTFILE:	fn⌘F9
+NB. DITTO THEN RUN:		fnF9
 
-writesourcex_jp_ '~Dev/cal/source';'~Release/cal.ijs'
+smoutput '--- Build: started for: ',GIT
+
+date_z_=: 6!:0 bind 'YYYY-MM-DD  hh:mm:ss'
+
+NOW=: date''
+BUILTFILE_z_=: GIT,'/cal.ijs'
+
+NB. build BUILTFILE
+dat=. readsourcex_jp_ (GIT,'/source')
+dat=. dat rplc 'BUILTAT';'AABUILT=: ',quote NOW
+dat fwrites BUILTFILE
+
+smoutput '--- Build: completed for: ',GIT
