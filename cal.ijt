@@ -11,7 +11,7 @@ the verb: tabengine
 )
 
 require 'math/cal'
-tt=: tabengine_cal_    NB. handy way to send it instructions
+tt              NB. handy way to send it instructions
 
 tt 'VERSION'    NB. --fails because not initialized.
 
