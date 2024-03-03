@@ -34,7 +34,7 @@ CAL is a platform-independent engine.
 It forms the basis of TABULA, a backfitting scientific calculator.
 )
 
-RELEASE=: 'j805'
+RELEASE=: 'j9.4'
 
 FOLDER=: 'math/cal'
 

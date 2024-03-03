@@ -21,21 +21,7 @@ RATIONALIZED_z_=: 1  NB. switch for inversion heuristics
 EXTENDEDSINE_z_=: 0  NB. switch for extended trig verbs in _z_
 smoutputINV_z_=: empty  NB. DO NOT trace inversion heuristics
 
-3 : 0''
-if. 0 = nc <'JVERSION_NUMBER' do.
-  ver=. JVERSION_NUMBER % 10000
-else.
-  ver=. ". }. '/' taketo 9!:14''
-end.
-if. 900 < ver do.
-NB. smoutput '<><><> sslope is software'
-  require 'math/calculus'
-  sslope_z_=: sslope_jcalculus_
-else.
-NB. smoutput '<><><> sslope is D:'
-  ". :: 0: 'sslope_z_=: D:'
-end.
-i.0 0
-)
+require 'math/calculus'
+sslope_z_=: sslope_jcalculus_
 
 BUILTAT

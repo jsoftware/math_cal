@@ -21,22 +21,10 @@ RATIONALIZED_z_=: 1
 EXTENDEDSINE_z_=: 0
 smoutputINV_z_=: empty
 
-3 : 0''
-if. 0 = nc <'JVERSION_NUMBER' do.
-  ver=. JVERSION_NUMBER % 10000
-else.
-  ver=. ". }. '/' taketo 9!:14''
-end.
-if. 900 < ver do.
-  require 'math/calculus'
-  sslope_z_=: sslope_jcalculus_
-else.
-  ". :: 0: 'sslope_z_=: D:'
-end.
-i.0 0
-)
+require 'math/calculus'
+sslope_z_=: sslope_jcalculus_
 
-AABUILT=: '2023-08-11  18:09:58'
+AABUILT=: '2024-03-03  00:53:30'
 
 '==================== [cal] help.ijs ===================='
 0 :0
@@ -2978,7 +2966,6 @@ marklast=:  i: = [: i. [: # [
 fixup_amodel=: 3 : 'amodel=: amodel markfirst 1'
 tolerant=: 4 : '(|x-y) <: TOLERANCE * (>./|x,y)'
 approximates=: 4 : '(x=y) or (TOLERANCE >: |x-y)'
-
 '==================== [cal] inverC0.ijs ===================='
 0 :0
 Monday 8 April 2019  13:05:08
@@ -4373,222 +4360,6 @@ end.
 
 
 
-'==================== [cal] ttbrowse.ijs ===================='
-
-0 :0
-Thursday 25 April 2019  23:05:15
--
-old version cloned: tempuu 71
--
-onload_z_=: do
-wd 'psel ttb; qform;'
-)
-
-coclass 'ttb'
-clear 'ttb'
-
-UNSET=: '<UNSET>'
-path=: UNSET
-TAG0=: <,''
-POS=: 322 23 830 400
-
-loadit=: 0:
-loadFixed=: load&dquote
-
-
-ttb_default=: 3 : 0
-
-smoutput '>>> missing handler: ',sysevent
-)
-
-TTBFORM=: 0 : 0
-pc ttb;pn ttbrowse;
-bin v;
-bin h;
-cc textbuf editm;
-cc infobuf editm;
-cc g table;
-bin z;
-bin hs;
-  cc bnSorn button; cn "Sort/name";
-  cc bnSord button; cn "Sort/date";
-  cc bnSort button; cn "Sort/tag";
-  cc bnDele button; cn "Delete";
-  cc bnTag0 button; cn "No Tags";
-  cc bnTag1 button; cn "Red";
-  cc bnTag2 button; cn "Green";
-  cc bnOpen button; cn "Open";
-  cc bnLoad button; cn "Load";
-bin sz;
-cc sbar static; cn "status";
-bin z;
-set textbuf font fixfont;
-pshow;
-)
-0 :0
-bin s;		rem left spacer;
-bin s;		rem right spacer;
-  cc bnSorn button; cn "Sort/filename";
-  cc bnSord button; cn "Sort/date";
-  cc bnSort button; cn "Sort/tag";
-)
-
-TAG1=: 0 : 0
-62 70 6C 69 73 74 30 30 A1 01 55 52 65 64 0A 36
-08 0A 00 00 00 00 00 00 01 01 00 00 00 00 00 00
-00 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-00 10
-)
-
-TAG2=: 0 : 0
-62 70 6C 69 73 74 30 30 A1 01 57 47 72 65 65 6E
-0A 32 08 0A 00 00 00 00 00 00 01 01 00 00 00 00
-00 00 00 02 00 00 00 00 00 00 00 00 00 00 00 00
-00 00 00 12
-)
-
-tagpath=: (''ddefine) :: 0:
-
-if. 0=#y do. y=. path end.
-f0=. 2!:0
-f1=. 2!:1
-hx=. deb (LF;SP)stringreplace ". 'TAG',":x
-p=. jpath y
-com=. 'com.apple.metadata:_kMDItemUserTags'
-if. p-:UNSET do. return. end.
-select. x
-case. 0 do. f0 sw'xattr -d (com) (p)'
-case. 1 do. f0 sw'xattr -wx (com) "(hx)" (p)'
-case. 2 do. f0 sw'xattr -wx (com) "(hx)" (p)'
-end.
-
-
-select. f0 sw'xattr -px (com) (p)'
-case. TAG1 do. 1 return.
-case. TAG2 do. 2 return.
-case.      do. 0
-end.
-)
-
-directory=: 3 : 0
-
-
-DIR=: 1!:0 TPTT,'/*.ijs'
-)
-
-window_close=: 3 : 0
-wd :: empty 'psel ttb; pclose;'
-)
-
-gRefresh=: 4 : 0
-
-wd 'psel ttb'
-wd 'set g shape ',":shape=: $y
-wd 'set g protect ',": , shape$0 1 1
-wd 'set g hdr *', x
-wd 'set g data *', ; SP ,each dquote&": each y
-wd 'set g resizecol'
-)
-
-refresh=: 3 : 0
-'TAG FILENAME DATE' gRefresh TAG0 ,"1 (2&{."1) directory''
-)
-
-start=: 3 : 0
-window_close''
-wd TTBFORM
-refresh''
-wd 'psel ttb; pmove ' , ":POS
-putsb 'started: ',date''
-)
-
-putsb=: 3 : 0
-
-wd 'psel ttb; set sbar text *',":,y
-)
-
-ttb_bnDele_button=: 3 : 0
-
-
-putsb z=. sw'deletefile_cal_ (quote path) (NB) -executed'
-smoutput z
-deletefile_cal_ path
-refresh''
-)
-
-ttb_bnOpen_button=: 3 : 0
-
-open path
-)
-
-ttb_bnLoad_button=: 3 : 0
-
-try.
-  tabenginex_tabby_ 'load' ; path
-  setFormTitle_tabby_''
-catch. smoutput '>>> ttb_bnLoad_button: illegal call into _tabby_'
-end.
-)
-
-ttb_g_mbldbl=: ttb_bnLoad_button
-
-ttb_bnTag0_button=: 0&tagpath
-ttb_bnTag1_button=: 1&tagpath
-ttb_bnTag2_button=: 2&tagpath
-ttb_bnSord_button=: sortByDate
-ttb_bnSorn_button=: sortByName
-ttb_bnSort_button=: sortByTag
-
-ttb_close=: window_close
-
-ttb_g_mbldown=: empty
-
-ttb_g_mark=: 3 : 0
-
-fno=: {.".g
-fname=: 0 pick fno{DIR
-smoutput fname
-path=: TPTT,SL,fname
-tagid=. tagpath path
-tag=. > tagid { ;:'notag red green'
-text=: info=: UNSET
-text=: read path
-erase 'TT TTIMAGE TTINFO vquan vfact'
-loadFixed :: 0: path
-if. -.NaNoun'TTIMAGE' do. text=: TTIMAGE end.
-if. -.NaNoun'TTINFO' do. info=: TTINFO end.
-if. loadit'' do. ttb_bnLoad_button''
-else.
-  wd 'psel ttb; set textbuf text *',text
-  wd 'psel ttb; set infobuf text *',info
-  putsb tag,' / ttb_g_mark: ',date''
-end.
-)
-
-heldshift=: 3 : '1=".sysmodifiers'
-
-direction=: 3 : 0
-
-if. y=heldshift'' do. 'descending' else. 'ascending' end.
-)
-
-sortByDate=: 3 : 0
-
-wd 'psel ttb; set g sort 2 ',direction 0
-)
-
-sortByName=: 3 : 0
-
-wd 'psel ttb; set g sort 1 ',direction 1
-)
-
-sortByTag=: 3 : 0
-
-wd 'psel ttb; set g sort 0 ',direction 0
-)
-
-onload 'start 0'
-
 '==================== [cal] dashboard.ijs ===================='
 
 0 :0
@@ -4777,7 +4548,6 @@ i.0 0
 )
 
 onload 'dash _1'
-
 '==================== [cal] start.ijs ===================='
 
 cocurrent 'cal'
@@ -4825,10 +4595,8 @@ start=: 3 : 0
 
 
 
-dbstopme''
 trace 0
 sswInversion=: empty
-
 loadFixed PARENTDIR sl 'tpathjal.ijs'
 loadFixed TPMC sl 'manifest.ijs'
 
