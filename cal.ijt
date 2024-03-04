@@ -83,7 +83,7 @@ let us open an unchanging sample: SAMPLE0 ...
 
 tt 'newt'
 tt 'open 0'     NB. ditto 'open 1' for SAMPLE1 etc
-tt  'CTBU'
+tt 'CTBU'
 
 NB. =========================================================
 Lab Section CMD4
@@ -117,6 +117,26 @@ tt 'name 1 my new name'
 tt 'valu 1 2.5'
 tt 'VALU 1'
 tt 'CTBU'
+
+NB. =========================================================
+Lab Section EXTRA1
+
+Additional commands are avaliable for editing ttable.
+An example is setting the unit to an incompatible one.
+There are two units associated for each line, one is the unit
+for the internal representation of the value, another
+is the nominal unit used to display the value.
+
+For safety reasons tabengine only allow set to nominal unit to
+a compatible one. To force set both of the units, use
+forceunits.
+)
+
+tt 'unit 6 deg' NB. no effect
+0$6 forceunits_cal_ 'deg'
+tt 'CTBU'
+tt 'unit 6 rad'
+UNITS_cal_;<UNITN_cal_
 
 NB. =========================================================
 Lab Section SAVE
