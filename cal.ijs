@@ -15,7 +15,7 @@ require 'math/uu/handy4uu'
 
 coclass 'cal'
 
-PARENTDIR=: (zx i:'/'){.zx=. jpathsep>(4!:4<'zx'){4!:3''[zx=. ''
+PARENTDIR=: ({.~ i:&'/') jpathsep>(4!:4<'PARENTDIR'){4!:3''[PARENTDIR=: ''
 onload_z_=: empty
 RATIONALIZED_z_=: 1
 EXTENDEDSINE_z_=: 0
